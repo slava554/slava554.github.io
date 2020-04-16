@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="index.css">
+  <title>Chrome and arduino connection through serial example</title>
+</head>
+<body>
+  <div id="app">
+    <div class="container">
+      <div class="row center">
+        <h5 class="header col s12 light">An example of connection between Chrome and Arduino through a serial port</h5>
+      </div>
+      <div id="select-port" class="row center">
+        <a id="select-port-btn" class="btn waves-effect waves-light tile"><i class="material-icons left">settings_input_composite</i>Select Port</a>
+      </div>
+      <div id="data-transmission" class="row center hidden">
+        <div class="row">
+          <div class="input-field col s12">
+            <textarea disabled id="received" class="materialize-textarea" placeholder=""></textarea>
+            <label for="received">Data from Arduino</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <input id="text-to-send" type="text">
+            <label for="text-to-send">Send to Arduino</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <a id="send" class="waves-effect waves-light btn"><i class="material-icons left">send</i>Send</a>
+            <a id="led" class="waves-effect waves-light btn"><i class="material-icons left">lightbulb_outline</i>Led ON/OFF</a>
+          </div>
+        </div>
+      </div>
+      <div id="alerts" class="alerts card-panel red lighten-4 red-text text-darken-4"></div>
+    </div>
+  </div>
+
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="index.js"></script>
+</html>
