@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>5e beast damage calculator</h1>
+    
+    <p>
+        <span>Velociraptor </span>
+        <span>damage: </span>
+        <span id="velociraptor"></span>
+    </p>
+    <p>
+        <span>Deep rothe, jump </span>
+        <span>damage: </span>
+        <span id="rothe-jump"></span>
+    </p>
+    <p>
+        <span>Deep rothe, pure </span>
+        <span>damage: </span>
+        <span id="rothe"></span>
+    </p>
+    <p>
+        <span>Constrictor snake </span>
+        <span>damage: </span>
+        <span id="constrictor-snake"></span>
+    </p>
+    <p>
+        <span>Flying snake </span>
+        <span>damage: </span>
+        <span id="flying-snake"></span>
+    </p>
+    <p>
+        beasts number: <input type="number" id="beasts-number" value="8">
+        target ac: <input type="number" id="ac" value="10">
+        advantage: <input type="checkbox" id="advantage">
+        <button id="calculate-btn">calculate</button>
+    </p>
+    <p style="margin-top: 50px; background-color: #444;">
+        <span id="log"></span>
+    </p>
+    
+    <script>
+        const roll = (d)=>Math.floor(Math.random()*d+1);
+        const isHit = (attackBonus, ac)=>roll(20)+attackBonus >= ac;
+        const attackOnceIsHit = (attackBonus, ac, advantage, disadvantage) => {
+            if(advantage) {
+                return isHit(attackBonus, ac) || isHit(attackBonus, ac);
+            }
+            if(disadvantage) {
+                return isHit(attackBonus, ac) && isHit(attackBonus, ac);
+            }
+            return isHit(attackBonus, ac); 
+        }
+        /* attacks - array of objects like {
+            attackBonus: 5,
+            damage: 10,
+            advantage: rtue, 
+            disadvantage: false
+        } */
+        const attackOneBeastGetDamage = (attacks, ac) => {
+            let damage = 0;
+            attacks.forEach(attack => {
+                if(attackOnceIsHit(attack.attackBonus, ac, attack.advantage, attack.disadvantage)) {
+                    damage += attack.damage;
+                }
+            });
+            return damage;
+        }
+
+        const attackVelociraptor = (count, ac) => {
+            let damage = 0;
+            for(let i=0; i<count; i++) {
+                damage += attackOneBeastGetDamage([
+                    {attackBonus: 4, damage: roll(6)+2, advantage: true, disadvantage: false},
+                    {attackBonus: 4, damage: roll(4)+2, advantage: true, disadvantage: false},
+                ], ac);
+            }
+            return damage;
+        }
+
+        const attackRotheJump = (count, ac, advantage) => {
+            let damage = 0;
+            for(let i=0; i<count; i++) {
+                damage += attackOneBeastGetDamage([
+                    {attackBonus: 6, damage: roll(6)+4 + roll(6)+roll(6), advantage: advantage, disadvantage: false},
+                ], ac);
+            }
+            return damage;
+        }
+
+        const attackRothe = (count, ac, advantage) => {
+            let damage = 0;
+            for(let i=0; i<count; i++) {
+                damage += attackOneBeastGetDamage([
+                    {attackBonus: 6, damage: roll(6)+4, advantage: advantage, disadvantage: false},
+                ], ac);
+            }
+            return damage;
+        }
+
+        const attackConstrictorSnake = (count, ac, advantage) => {
+            let damage = 0;
+            for(let i=0; i<count; i++) {
+                damage += attackOneBeastGetDamage([
+                    {attackBonus: 4, damage: roll(8)+2, advantage: advantage, disadvantage: false},
+                ], ac);
+            }
+            return damage;
+        }
+
+        const attackFlyingSnake = (count, ac, advantage) => {
+            let damage = 0;
+            for(let i=0; i<count; i++) {
+                damage += attackOneBeastGetDamage([
+                    {attackBonus: 6, damage: roll(4)+roll(4)+roll(4)+1, advantage: advantage, disadvantage: false},
+                ], ac);
+            }
+            return damage;
+        }
+
+        
+
+        const attackAllCreatures = () => {
+            const n = +document.getElementById("beasts-number").value;
+            const ac = +document.getElementById("ac").value;
+            const advantage = document.getElementById("advantage").checked;
+            document.getElementById("log").innerText = "";
+            document.getElementById("velociraptor").innerText = attackVelociraptor(n, ac);
+            document.getElementById("rothe-jump").innerText = attackRotheJump(n, ac, advantage);
+            document.getElementById("rothe").innerText = attackRothe(n, ac, advantage);
+            document.getElementById("constrictor-snake").innerText = attackConstrictorSnake(n, ac, advantage);
+            document.getElementById("flying-snake").innerText = attackFlyingSnake(n, ac, advantage);
+            
+        }
+
+        document.getElementById('calculate-btn').addEventListener("click", ()=>attackAllCreatures());
+    </script>
+</body>
+</html>
